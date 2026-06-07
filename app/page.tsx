@@ -1,28 +1,15 @@
-'use client';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import Script from 'next/script';
 
-import { useEffect } from 'react';
-import { BODY_HTML } from './html-content';
+export const dynamic = 'force-static';
 
 export default function Home() {
-  useEffect(() => {
-    if (document.getElementById('__rebuilder_app_js__')) return;
-
-    const script = document.createElement('script');
-    script.id = '__rebuilder_app_js__';
-    script.src = '/app.js';
-    script.async = false;
-    document.body.appendChild(script);
-
-    return () => {
-      const el = document.getElementById('__rebuilder_app_js__');
-      if (el) el.remove();
-    };
-  }, []);
-
+  const html = readFileSync(join(process.cwd(), 'public', 'body.html'), 'utf-8');
   return (
-    <div
-      suppressHydrationWarning
-      dangerouslySetInnerHTML={{ __html: BODY_HTML }}
-    />
+    <>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <Script src="/app.js" strategy="afterInteractive" />
+    </>
   );
 }
