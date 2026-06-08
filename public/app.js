@@ -1991,7 +1991,3 @@ async function doRenameApk() {
     setTimeout(function() { if (progDiv) progDiv.style.display = 'none'; }, 2000);
   }
 }
-
-</script>
-
-</body></html>
