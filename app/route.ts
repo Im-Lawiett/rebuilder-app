@@ -1,0 +1,15 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+export const dynamic = 'force-static';
+
+export async function GET() {
+  const html = readFileSync(join(process.cwd(), 'public', 'app.html'), 'utf-8');
+  return new Response(html, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+    },
+  });
+}
