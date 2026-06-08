@@ -94,8 +94,8 @@ let currentUser = JSON.parse(localStorage.getItem('rfUser') || 'null');
 let authToken = localStorage.getItem('rfToken') || '';
 
 // ========== INIT ==========
-window.addEventListener('DOMContentLoaded', function() {
-  // [A] Show body immediately (security already checked in inline script)
+function initApp() {
+  // [A] Show body immediately
   document.body.style.visibility = 'visible';
 
   startSplash();
@@ -171,7 +171,14 @@ window.addEventListener('DOMContentLoaded', function() {
   if (javaEl) javaEl.addEventListener('input', liveDebounced);
   if (manifestEl) manifestEl.addEventListener('input', liveDebounced);
   setTimeout(function() { if (xmlEl && xmlEl.value) previewCustomApk(); }, 900);
-});
+}
+
+// DOM-ready guard: if script loads after DOMContentLoaded has already fired, run immediately
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // ========== WEB STATUS CHECK ==========
 async function checkWebStatus() {

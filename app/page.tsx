@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import Script from 'next/script';
 
 export const dynamic = 'force-static';
 
@@ -9,7 +8,9 @@ export default function Home() {
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: html }} />
-      <Script src="/app.js" strategy="afterInteractive" />
+      {/* defer ensures script runs after HTML parsed but BEFORE DOMContentLoaded fires */}
+      {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+      <script src="/app.js" defer={true} />
     </>
   );
 }
